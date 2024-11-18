@@ -27,7 +27,9 @@ const fetchProductStockByEAN = async (req, res) => {
             }
 
             const stockData = result['soap:Envelope']['soap:Body']
-                .BasicApiB2BPartners_ProductStockResponse.BasicApiB2BPartners_ProductStockResult.heliTwrStock;
+                .BasicApiB2BPartners_ProductStockByEANResponse
+                .BasicApiB2BPartners_ProductStockByEANResult
+                .heliTwrStock;
 
             res.status(200).json(stockData);
         });
