@@ -23,3 +23,10 @@ app.post('/webhook/create-product', handleCreateProduct);
 
 // Route to test fetching from the wholesaler API
 app.get('/wholesaler/fetch-product', fetchProductStockByEAN);
+
+// Middleware to log incoming requests
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
+

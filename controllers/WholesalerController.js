@@ -20,17 +20,24 @@ const fetchProductStockByEAN = async (req, res) => {
             headers: { 'Content-Type': 'text/xml; charset=utf-8' }
         });
 
+        // Parse XML response
         xml2js.parseString(response.data, { explicitArray: false }, (err, result) => {
             if (err) {
                 console.error('Error parsing XML:', err);
                 return res.status(500).send('Error parsing response');
             }
 
+            // Extract heliTwrStock object
             const stockData = result['soap:Envelope']['soap:Body']
                 .BasicApiB2BPartners_ProductStockByEANResponse
                 .BasicApiB2BPartners_ProductStockByEANResult
                 .heliTwrStock;
 
+            if (!stockData) {
+                return res.status(404).json({ message: 'No stock data found for the given EAN.' });
+            }
+
+            // Send JSON response
             res.status(200).json(stockData);
         });
     } catch (error) {
